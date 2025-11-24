@@ -7,7 +7,7 @@ export const experiences = [
     location: 'Phoenix, AZ',
     dates: 'May 2023 - Present',
     points: [
-      `enerated $1.5M+ annual revenue by leading frontend engineering for a card-on-file web application using JavaScript,
+      `Generated $1.5M+ annual revenue by leading frontend engineering for a card-on-file web application using JavaScript,
       TypeScript, and React, delivering a highly responsive and fault-tolerant solution in collaboration with product and design teams.`,
       `Achieved 100% unit test coverage and maintained code quality across multiple GitHub repositories by implementing frontend
       and back-end best practices, performing code reviews, and leveraging JavaScript, TypeScript, and React for web and mobile-first
@@ -74,7 +74,7 @@ containerization and Kubernetes orchestration, supporting both iOS and Android a
       `Enhanced UI consistency across platforms by developing interactive prototypes and wireframes in React and TypeScript,
       collaborating with design, product, and engineering teams to align with Android and iOS app standards.`,
       `Improved deployment reliability and scalability by leveraging Docker and Kubernetes for containerization and orchestration, and
-      implementing Postgres and DynamoDB for resilient data management in a production environment.`,
+       implementing Postgres and DynamoDB for resilient data management in a production environment.`,
     ]
   }
 ];
