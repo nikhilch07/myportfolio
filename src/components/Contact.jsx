@@ -8,7 +8,7 @@ export default function Contact() {
   const onSubmit = (e) => {
     e.preventDefault();
     const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
-    window.location.href = `mailto:nikhil@example.com?subject=Portfolio%20Contact&body=${body}`;
+    window.location.href = `mailto:nikhilch07@example.com?subject=Portfolio%20Contact&body=${body}`;
   };
 
   return (
