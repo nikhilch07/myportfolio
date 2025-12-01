@@ -42,7 +42,7 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
-          <div className="flex h-16 w-full items-center">
+          <div className="lg:ml-auto flex h-16 items-center">
             <DisclosureButton
               className="inline-flex rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500 sm:hidden"
               onClick={() => setOpen((prev) => !prev)}
@@ -53,7 +53,7 @@ export default function Navbar() {
                 <Bars3Icon aria-hidden="true" className="size-6" />
               )}
             </DisclosureButton>
-            <div className="flex flex-1 justify-center sm:justify-start">
+            <div className="flex flex-1 justify-center sm:justify-start rounded-[25px] shadow-lg">
               <div className="hidden sm:flex space-x-4">
                 {navigation.map((item) => (
                   <a

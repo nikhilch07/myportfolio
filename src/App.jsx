@@ -21,7 +21,6 @@ export default function App() {
     } else {
       setShowBackToTop(false);
     }
-    setLastScrollY(currentScrollY);
   }, 200);
 
   useEffect(() => {

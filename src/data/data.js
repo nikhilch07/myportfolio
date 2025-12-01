@@ -83,9 +83,16 @@ export const education = [
   {
     id: 1,
     school: 'Jawaharlal Nehru Technological University',
-    degree: 'B.S. in Computer Science',
+    degree: 'Bachelors in Computer Science',
     location: 'Hyderabad, India',
     dates: '2011 — 2015'
+  },
+  {
+    id: 2,
+    school: 'University of Bridgeport',
+    degree: 'Masters in Computer Science',
+    location: 'Bridgeport, CT',
+    dates: '2015 — 2017'
   }
 ];
 
