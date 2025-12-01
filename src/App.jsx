@@ -5,7 +5,6 @@ import Experience from "./components/Experience";
 import Education from "./components/Education";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
-import Showcase3D from "./components/Showcase3D";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
@@ -36,10 +35,9 @@ export default function App() {
       <main>
         <About />
         <Experience />
-        <Education />
         <Projects />
         <Skills />
-        <Showcase3D />
+        <Education />
         <Contact />
         {showBackToTop && (
           <div>
