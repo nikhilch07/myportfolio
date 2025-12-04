@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import portfolio_image from '../assets/portfolio_image.png';
 import { motion } from "framer-motion";
 
 const containerVariants = {
@@ -123,7 +124,7 @@ export default function About() {
             <div className="relative aspect-[4/5]">
               {/* TODO: change this to your actual image path */}
               <img
-                src="/images/nikhil-profile.jpg"
+                src={portfolio_image}
                 alt="Nikhil Cheriyala"
                 className="h-full w-full object-cover"
               />
