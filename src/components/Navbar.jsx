@@ -17,7 +17,6 @@ const navigation = [
   { href: "#education", label: "Education", current: false },
   { href: "#projects", label: "Projects", current: false },
   { href: "#skills", label: "Skills", current: false },
-  { href: "#showcase-3d", label: "3D Gallery", current: false },
   { href: "#contact", label: "Contact", current: false },
 ];
 
