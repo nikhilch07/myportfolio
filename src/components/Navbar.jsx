@@ -12,12 +12,12 @@ import {
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { href: "#about", label: "About", current: true },
-  { href: "#experience", label: "Experience", current: false },
-  { href: "#education", label: "Education", current: false },
-  { href: "#projects", label: "Projects", current: false },
-  { href: "#skills", label: "Skills", current: false },
-  { href: "#contact", label: "Contact", current: false },
+  { href: "#about", label: "About" },
+  { href: "#experience", label: "Experience" },
+  { href: "#education", label: "Education" },
+  { href: "#projects", label: "Projects" },
+  { href: "#skills", label: "Skills" },
+  { href: "#contact", label: "Contact" },
 ];
 
 function classNames(...classes) {
@@ -25,89 +25,228 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(false);
+  const [activeSection, setActiveSection] = useState("#about");
 
+  // Dark mode toggle
   useEffect(() => {
     const root = document.documentElement;
     dark ? root.classList.add("dark") : root.classList.remove("dark");
   }, [dark]);
 
+  // Scroll spy: update activeSection based on what is in view
+  useEffect(() => {
+    const sectionIds = navigation.map((item) => item.href.replace("#", ""));
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const currentLabel =
+    navigation.find((item) => item.href === activeSection)?.label ||
+    "Portfolio";
+
   return (
     <Disclosure
       as="nav"
-      className="bg-fixed bg-cover bg-center  bg-[linear-gradient(135deg,_rgba(2,6,23,.85),_rgba(30,58,138,.75))]
-    dark:bg-[linear-gradient(180 deg,_rgba(2,6,23,.85),_rgba(15,23,42,.85))]"
+      className="
+        fixed
+        top-6
+        left-1/2
+        z-50
+        -translate-x-1/2
+        w-full
+        px-4
+        sm:px-6
+        lg:px-8
+        pointer-events-none
+      "
     >
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
-          <div className="lg:ml-auto flex h-16 items-center">
-            <DisclosureButton
-              className="inline-flex rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500 sm:hidden"
-              onClick={() => setOpen((prev) => !prev)}
+      {({ open }) => (
+        <>
+          {/* Glassy nav pill */}
+          <div className="pointer-events-auto w-full max-w-4xl mx-auto">
+            <div
+              className="
+                flex
+                items-center
+                justify-between
+                gap-3
+                rounded-full
+                border
+                border-white/70
+                bg-white/65
+                bg-clip-padding
+                shadow-lg
+                shadow-sky-200/70
+                backdrop-blur-2xl
+                px-4
+                py-2
+                dark:border-slate-700/80
+                dark:bg-slate-900/90
+                dark:shadow-lg
+                dark:shadow-sky-500/35
+              "
             >
-              {open ? (
-                <XMarkIcon aria-hidden="true" className="size-6" />
-              ) : (
-                <Bars3Icon aria-hidden="true" className="size-6" />
-              )}
-            </DisclosureButton>
-            <div className="flex flex-1 justify-center sm:justify-start rounded-[25px] shadow-lg">
-              <div className="hidden sm:flex space-x-4">
-                {navigation.map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    aria-current={item.current ? "page" : undefined}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-950/50 text-white"
-                        : "text-gray-300 hover:bg-white/5 hover:text-white",
-                      "rounded-md px-3 py-2 text-sm font-medium"
-                    )}
-                  >
-                    {item.label}
-                  </a>
-                ))}
+              {/* Left: mobile menu button */}
+              <div className="flex items-center sm:hidden">
+                <DisclosureButton
+                  className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    rounded-full
+                    p-2
+                    text-slate-600
+                    hover:bg-white/80
+                    hover:text-slate-900
+                    focus:outline-none
+                    focus-visible:outline-2
+                    focus-visible:outline-offset-2
+                    focus-visible:outline-sky-500
+                    dark:text-slate-300
+                    dark:hover:bg-slate-800
+                    dark:hover:text-slate-50
+                  "
+                >
+                  {open ? (
+                    <XMarkIcon aria-hidden="true" className="size-5" />
+                  ) : (
+                    <Bars3Icon aria-hidden="true" className="size-5" />
+                  )}
+                </DisclosureButton>
               </div>
+
+              {/* Center: nav items (desktop) or active label (mobile) */}
+              <div className="flex flex-1 items-center justify-center">
+                {/* Desktop nav */}
+                <div className="hidden sm:flex space-x-2">
+                  {navigation.map((item) => {
+                    const isActive = activeSection === item.href;
+                    return (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        aria-current={isActive ? "page" : undefined}
+                        className={classNames(
+                          isActive
+                            ? "bg-slate-900/85 text-slate-50 dark:bg-slate-100 dark:text-slate-900"
+                            : "text-slate-700 hover:bg-white/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+                          "rounded-full px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors"
+                        )}
+                      >
+                        {item.label}
+                      </a>
+                    );
+                  })}
+                </div>
+
+                {/* Mobile: show current section label in the pill center */}
+                <div className="sm:hidden text-sm font-medium text-slate-800 dark:text-slate-100">
+                  {currentLabel}
+                </div>
+              </div>
+
+              {/* Right: dark mode toggle */}
+              <button
+                type="button"
+                className="
+                  ml-auto
+                  inline-flex
+                  items-center
+                  justify-center
+                  rounded-full
+                  p-2
+                  text-slate-600
+                  hover:text-slate-900
+                  hover:bg-white/80
+                  focus:outline-none
+                  focus-visible:outline-2
+                  focus-visible:outline-offset-2
+                  focus-visible:outline-sky-500
+                  dark:text-slate-300
+                  dark:hover:bg-slate-800
+                  dark:hover:text-slate-50
+                "
+                onClick={() => setDark((d) => !d)}
+              >
+                {dark ? (
+                  <MoonIcon aria-hidden="true" className="size-5" />
+                ) : (
+                  <SunIcon aria-hidden="true" className="size-5" />
+                )}
+              </button>
             </div>
           </div>
 
-          <button
-            type="button"
-            className="ml-auto rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500"
-            onClick={() => setDark((d) => !d)}
+          {/* Mobile panel - now clearly BELOW the navbar pill */}
+          <DisclosurePanel
+            className="
+              pointer-events-auto
+              w-full
+              max-w-4xl
+              mx-auto
+              mt-2
+              rounded-2xl
+              border
+              border-white/70
+              bg-white/90
+              shadow-lg
+              shadow-sky-200/70
+              backdrop-blur-2xl
+              px-4
+              py-3
+              text-center
+              sm:hidden
+              dark:border-slate-700/80
+              dark:bg-slate-900/95
+              dark:shadow-lg
+              dark:shadow-sky-500/30
+            "
           >
-            {dark ? (
-              <MoonIcon aria-hidden="true" className="size-6" />
-            ) : (
-              <SunIcon aria-hidden="true" className="size-6" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      <DisclosurePanel className="sm:hidden">
-        <div className="space-y-1 px-2 pt-2 pb-3">
-          {navigation.map((item) => (
-            <DisclosureButton
-              key={item.href}
-              as="a"
-              href={item.href}
-              aria-current={item.current ? "page" : undefined}
-              onClick={() => setOpen(false)}
-              className={classNames(
-                item.current
-                  ? "bg-gray-950/50 text-white"
-                  : "text-gray-300 hover:bg-white/5 hover:text-white",
-                "block rounded-md px-3 py-2 text-base font-medium"
-              )}
-            >
-              {item.label}
-            </DisclosureButton>
-          ))}
-        </div>
-      </DisclosurePanel>
+            <div className="space-y-1">
+              {navigation.map((item) => {
+                const isActive = activeSection === item.href;
+                return (
+                  <DisclosureButton
+                    key={item.href}
+                    as="a"
+                    href={item.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className={classNames(
+                      isActive
+                        ? "bg-slate-900/85 text-slate-50 dark:bg-slate-100 dark:text-slate-900"
+                        : "text-slate-700 hover:bg-white/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+                      "block rounded-full px-3 py-2 text-sm font-medium transition-colors"
+                    )}
+                  >
+                    {item.label}
+                  </DisclosureButton>
+                );
+              })}
+            </div>
+          </DisclosurePanel>
+        </>
+      )}
     </Disclosure>
   );
 }
