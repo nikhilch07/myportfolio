@@ -1,10 +1,16 @@
-export const useThrottle = (func, delay) => {
-    let lastCall = 0;
-    return function (...args) {
-        const now = new Date().getTime();
-        if (now - lastCall >= delay) {
-        lastCall = now;
-        return func(...args);
-        }
-    };
-    }
+import { useRef, useCallback } from "react";
+
+export const useThrottle = (callback, delay) => {
+  const lastCallRef = useRef(0);
+
+  return useCallback(
+    (...args) => {
+      const now = Date.now();
+      if (now - lastCallRef.current >= delay) {
+        lastCallRef.current = now;
+        callback(...args);
+      }
+    },
+    [callback, delay]
+  );
+}

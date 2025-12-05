@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Disclosure,
   DisclosureButton,
@@ -10,6 +10,7 @@ import {
   SunIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useThrottle } from "../hooks/useThrottle";
 
 const navigation = [
   { href: "#about", label: "About" },
@@ -25,7 +26,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [activeSection, setActiveSection] = useState("#about");
 
   // Dark mode toggle
@@ -34,32 +35,39 @@ export default function Navbar() {
     dark ? root.classList.add("dark") : root.classList.remove("dark");
   }, [dark]);
 
-  // Scroll spy: update activeSection based on what is in view
-  useEffect(() => {
-    const sectionIds = navigation.map((item) => item.href.replace("#", ""));
+  // Scroll spy: figure out which section is "active" based on scroll position
+  const handleScroll = useCallback(() => {
+    const sectionIds = navigation.map((item) => item.href.slice(1));
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter(Boolean);
 
     if (!sections.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`);
-          }
-        });
-      },
-      {
-        threshold: 0.5,
+    const scrollY = window.scrollY;
+    const offset = 200; // tune based on navbar height
+
+    let currentHref = "#about";
+
+    sections.forEach((section) => {
+      const top = section.offsetTop;
+      if (scrollY + offset >= top) {
+        currentHref = `#${section.id}`;
       }
-    );
+    });
 
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
+    setActiveSection(currentHref);
   }, []);
+
+  const throttledScroll = useThrottle(handleScroll, 150);
+
+  useEffect(() => {
+    // run once on mount to set correct initial section
+    throttledScroll();
+
+    window.addEventListener("scroll", throttledScroll, { passive: true });
+    return () => window.removeEventListener("scroll", throttledScroll);
+  }, [throttledScroll]);
 
   const currentLabel =
     navigation.find((item) => item.href === activeSection)?.label ||
@@ -190,15 +198,15 @@ export default function Navbar() {
                 onClick={() => setDark((d) => !d)}
               >
                 {dark ? (
-                  <MoonIcon aria-hidden="true" className="size-5" />
-                ) : (
                   <SunIcon aria-hidden="true" className="size-5" />
+                ) : (
+                  <MoonIcon aria-hidden="true" className="size-5" />
                 )}
               </button>
             </div>
           </div>
 
-          {/* Mobile panel - now clearly BELOW the navbar pill */}
+          {/* Mobile panel - below navbar pill */}
           <DisclosurePanel
             className="
               pointer-events-auto
