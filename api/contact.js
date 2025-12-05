@@ -10,6 +10,9 @@ export default async function handler(req, res) {
   const user = process.env.MAIL_USER;
   const pass = process.env.MAIL_PASS;
 
+  console.log("MAIL_USER:", user );
+  console.log("MAIL_PASS:", pass );
+
   if (!user || !pass) {
     console.error("MAIL_USER or MAIL_PASS not set in environment");
     return res.status(500).json({
