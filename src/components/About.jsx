@@ -55,6 +55,7 @@ export default function About() {
           justify-between
           gap-10
           md:gap-16
+          md:h-1/2
         "
       >
         {/* Text block */}
@@ -103,9 +104,8 @@ export default function About() {
             whileTap={{ rotateX: 0, rotateY: 0, y: 0 }}
             transition={{ type: "spring", stiffness: 220, damping: 18 }}
             className="
-              max-w-[10rem]
-              sm:max-w-[12rem]
-              md:max-w-[14rem]
+              sm:max-w-[18rem]
+              md:max-w-[22rem]
               rounded-2xl
               border
               border-white/60
@@ -129,14 +129,6 @@ export default function About() {
                 className="h-full w-full object-cover"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3 text-left">
-                <p className="text-sm font-semibold text-slate-50">
-                  Nikhil Cheriyala
-                </p>
-                <p className="text-xs text-slate-200/85">
-                  Senior Frontend / UI Engineer
-                </p>
-              </div>
             </div>
           </motion.div>
         </div>
