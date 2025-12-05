@@ -6,6 +6,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // ✅ Read env vars
+  const user = process.env.MAIL_USER;
+  const pass = process.env.MAIL_PASS;
+
+  if (!user || !pass) {
+    console.error("MAIL_USER or MAIL_PASS not set in environment");
+    return res.status(500).json({
+      error: "Email service is not configured. Please try again later.",
+    });
+  }
+
   try {
     const { name, email, message } = req.body || {};
 
@@ -13,18 +24,17 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Missing fields" });
     }
 
-    // Configure Gmail SMTP using an app password
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.MAIL_USER, // your Gmail
-        pass: process.env.MAIL_PASS, // app password
+        user, // from env
+        pass, // from env
       },
     });
 
     await transporter.sendMail({
-      from: `"Portfolio Contact" <${process.env.MAIL_USER}>`,
-      to: "ntej18.ui@gmail.com", // where you receive the message
+      from: `"Portfolio Contact" <${user}>`,
+      to: "ntej18.ui@gmail.com",
       subject: `New portfolio message from ${name}`,
       replyTo: email,
       text: `
