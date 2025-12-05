@@ -50,7 +50,7 @@ useEffect(() => {
 
   return (
     <>
-      <footer className="w-full mt-20 px-4 pb-16 sm:px-6 lg:px-8 relative">
+      <footer className="w-full mt-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-5xl mx-auto relative">
           {/* Animated gradient border glow */}
           <div
